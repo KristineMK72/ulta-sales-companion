@@ -18,17 +18,18 @@ export interface Product {
   reviewCount: number;
   image: string;
   description: string;
-  notes?: {
-    top: string[];
-    heart: string[];
-    base: string[];
-  };
+  notes?: { top: string[]; heart: string[]; base: string[] };
   family?: string;
   keyIngredients?: string[];
   concerns?: string[];
   skinTypes?: string[];
   size?: string;
   tags: string[];
+  /** Real Ulta.com product page when available */
+  ultaUrl?: string;
+  sku?: string;
+  /** One-liner an associate can say on the floor */
+  salesTip?: string;
 }
 
 export const products: Product[] = [
@@ -43,14 +44,11 @@ export const products: Product[] = [
     reviewCount: 2840,
     image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=400&fit=crop",
     description: "A bold, sensual fragrance with almond and coffee notes over a cacao and tonka bean base.",
-    notes: {
-      top: ["Almond", "Coffee"],
-      heart: ["Jasmine", "Tuberose", "Orange Blossom"],
-      base: ["Tonka Bean", "Cacao", "Sandalwood", "Vanilla"],
-    },
+    notes: { top: ["Almond", "Coffee"], heart: ["Jasmine", "Tuberose", "Orange Blossom"], base: ["Tonka Bean", "Cacao", "Sandalwood", "Vanilla"] },
     family: "Oriental Floral",
     size: "2.7 oz",
     tags: ["bestseller", "sensual", "evening"],
+    salesTip: "If they love coffee or almond gourmands, this is the prestige evening pick — pair with the travel spray for gifting.",
   },
   {
     id: "fr-002",
@@ -63,14 +61,11 @@ export const products: Product[] = [
     reviewCount: 5120,
     image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=400&h=400&fit=crop",
     description: "Addictive coffee and vanilla fragrance with white flowers and patchouli.",
-    notes: {
-      top: ["Pink Pepper", "Orange Blossom", "Pear"],
-      heart: ["Coffee", "Jasmine", "Bitter Almond"],
-      base: ["Vanilla", "Patchouli", "Cedar"],
-    },
+    notes: { top: ["Pink Pepper", "Orange Blossom", "Pear"], heart: ["Coffee", "Jasmine", "Bitter Almond"], base: ["Vanilla", "Patchouli", "Cedar"] },
     family: "Oriental Vanilla",
     size: "3 oz",
     tags: ["bestseller", "coffee", "addictive"],
+    salesTip: "Our #1 coffee-vanilla ask. Guest likes Good Girl? Black Opium is the sister energy.",
   },
   {
     id: "fr-003",
@@ -83,14 +78,11 @@ export const products: Product[] = [
     reviewCount: 3890,
     image: "https://images.unsplash.com/photo-1587017539504-67cfbddac569?w=400&h=400&fit=crop",
     description: "A floral lavender scent with orange blossom and warm vanilla.",
-    notes: {
-      top: ["Lavender", "Mandarin Orange", "Blackcurrant"],
-      heart: ["Lavender", "Orange Blossom", "Jasmine"],
-      base: ["Madagascar Vanilla", "Ambergris", "Musk", "Cedar"],
-    },
+    notes: { top: ["Lavender", "Mandarin Orange", "Blackcurrant"], heart: ["Lavender", "Orange Blossom", "Jasmine"], base: ["Madagascar Vanilla", "Ambergris", "Musk", "Cedar"] },
     family: "Floral",
     size: "3 oz",
     tags: ["lavender", "day-to-night"],
+    salesTip: "Lavender lovers who still want something sexy — day to night in one bottle.",
   },
   {
     id: "fr-004",
@@ -103,14 +95,11 @@ export const products: Product[] = [
     reviewCount: 9200,
     image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=400&h=400&fit=crop",
     description: "Whipped cream, lavender, and coconut for a soft, dreamy scent.",
-    notes: {
-      top: ["Lavender", "Pear", "Bergamot"],
-      heart: ["Whipped Cream", "Coconut", "Praline"],
-      base: ["Vanilla", "Musk", "Woody Notes"],
-    },
+    notes: { top: ["Lavender", "Pear", "Bergamot"], heart: ["Whipped Cream", "Coconut", "Praline"], base: ["Vanilla", "Musk", "Woody Notes"] },
     family: "Gourmand",
     size: "3.4 oz",
     tags: ["affordable", "gourmand", "popular"],
+    salesTip: "When budget is under $65 but they want that sweet viral gourmand — this is the hand-sell.",
   },
   {
     id: "fr-005",
@@ -123,14 +112,11 @@ export const products: Product[] = [
     reviewCount: 4100,
     image: "https://images.unsplash.com/photo-1523293182086-7651a8997ba4?w=400&h=400&fit=crop",
     description: "Fresh and spicy with bergamot and pepper over ambroxan.",
-    notes: {
-      top: ["Calabrian Bergamot", "Pepper"],
-      heart: ["Sichuan Pepper", "Lavender", "Pink Pepper", "Vetiver", "Patchouli"],
-      base: ["Ambroxan", "Cedar", "Labdanum"],
-    },
+    notes: { top: ["Calabrian Bergamot", "Pepper"], heart: ["Sichuan Pepper", "Lavender", "Pink Pepper", "Vetiver", "Patchouli"], base: ["Ambroxan", "Cedar", "Labdanum"] },
     family: "Fresh Woody",
     size: "3.4 oz",
     tags: ["bestseller", "fresh", "masculine"],
+    salesTip: "Most requested men's fragrance. Fresh, not heavy — safe gift and everyday wear.",
   },
   {
     id: "fr-006",
@@ -143,14 +129,11 @@ export const products: Product[] = [
     reviewCount: 2800,
     image: "https://images.unsplash.com/photo-1595425970377-c9703ced78b8?w=400&h=400&fit=crop",
     description: "Woody aromatic with citrus, incense, and sandalwood.",
-    notes: {
-      top: ["Grapefruit", "Lemon", "Mint", "Pink Pepper"],
-      heart: ["Ginger", "Nutmeg", "Jasmine", "Iso E Super"],
-      base: ["Incense", "Cedar", "Sandalwood", "Patchouli", "White Musk"],
-    },
+    notes: { top: ["Grapefruit", "Lemon", "Mint", "Pink Pepper"], heart: ["Ginger", "Nutmeg", "Jasmine", "Iso E Super"], base: ["Incense", "Cedar", "Sandalwood", "Patchouli", "White Musk"] },
     family: "Woody Aromatic",
     size: "3.4 oz",
     tags: ["prestige", "woody", "elegant"],
+    salesTip: "When they want Sauvage energy but more polished and office-friendly — Bleu.",
   },
   {
     id: "fr-007",
@@ -163,14 +146,11 @@ export const products: Product[] = [
     reviewCount: 2100,
     image: "https://images.unsplash.com/photo-1615634260167-cce42782f222?w=400&h=400&fit=crop",
     description: "Romantic rose and peony with a soft musky base.",
-    notes: {
-      top: ["Blood Orange", "Mandarin"],
-      heart: ["Grasse Rose", "Peony", "Lily-of-the-Valley"],
-      base: ["White Musk", "Iris", "Patchouli"],
-    },
+    notes: { top: ["Blood Orange", "Mandarin"], heart: ["Grasse Rose", "Peony", "Lily-of-the-Valley"], base: ["White Musk", "Iris", "Patchouli"] },
     family: "Floral",
     size: "3.4 oz",
     tags: ["romantic", "floral", "classic"],
+    salesTip: "Classic rose gift — especially for someone who doesn't want gourmand or heavy oriental.",
   },
   {
     id: "fr-008",
@@ -183,14 +163,11 @@ export const products: Product[] = [
     reviewCount: 890,
     image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400&h=400&fit=crop",
     description: "Indulgent vanilla and tonka with spicy accents.",
-    notes: {
-      top: ["Cardamom", "Black Pepper"],
-      heart: ["Vanilla", "Tonka Bean"],
-      base: ["Benzoin", "Labdanum", "Woody Notes"],
-    },
+    notes: { top: ["Cardamom", "Black Pepper"], heart: ["Vanilla", "Tonka Bean"], base: ["Benzoin", "Labdanum", "Woody Notes"] },
     family: "Oriental Vanilla",
     size: "1.7 oz",
     tags: ["luxury", "vanilla", "sensual"],
+    salesTip: "Luxury vanilla — if they love Black Opium but want Tom Ford status.",
   },
   {
     id: "fr-009",
@@ -203,14 +180,11 @@ export const products: Product[] = [
     reviewCount: 15400,
     image: "https://images.unsplash.com/photo-1608248543808-ce295f8a8a55?w=400&h=400&fit=crop",
     description: "Pistachio and salted caramel body mist — warm and addictive.",
-    notes: {
-      top: ["Pistachio", "Almond"],
-      heart: ["Heliotrope", "Jasmine"],
-      base: ["Vanilla", "Salted Caramel", "Sandalwood"],
-    },
+    notes: { top: ["Pistachio", "Almond"], heart: ["Heliotrope", "Jasmine"], base: ["Vanilla", "Salted Caramel", "Sandalwood"] },
     family: "Gourmand",
     size: "8 oz",
     tags: ["bestseller", "body mist", "gourmand", "affordable"],
+    salesTip: "Layer with Bum Bum Cream for the full pistachio-caramel experience — guests go crazy for this set.",
   },
   {
     id: "fr-010",
@@ -223,14 +197,11 @@ export const products: Product[] = [
     reviewCount: 6700,
     image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=400&h=400&fit=crop",
     description: "Skin-scent with pink pepper, iris, and ambrox.",
-    notes: {
-      top: ["Pink Pepper"],
-      heart: ["Iris"],
-      base: ["Ambrox", "Musk"],
-    },
+    notes: { top: ["Pink Pepper"], heart: ["Iris"], base: ["Ambrox", "Musk"] },
     family: "Skin Scent",
     size: "1.7 oz",
     tags: ["clean", "skin scent", "minimal"],
+    salesTip: "For guests who say 'I don't like perfume' — this smells like clean skin, not a statement scent.",
   },
   {
     id: "sk-001",
@@ -248,6 +219,7 @@ export const products: Product[] = [
     skinTypes: ["Normal", "Dry", "Sensitive"],
     size: "16 oz",
     tags: ["drugstore", "barrier", "gentle", "bestseller"],
+    salesTip: "Derm-favorite starter. Pair with the moisturizing cream for a complete barrier routine under $40.",
   },
   {
     id: "sk-002",
@@ -265,6 +237,7 @@ export const products: Product[] = [
     skinTypes: ["All"],
     size: "1 oz",
     tags: ["affordable", "hydration", "bestseller"],
+    salesTip: "Apply on damp skin, then seal with moisturizer — that's the trick for HA serums.",
   },
   {
     id: "sk-003",
@@ -282,6 +255,7 @@ export const products: Product[] = [
     skinTypes: ["Sensitive", "Dry", "Compromised"],
     size: "1.35 oz",
     tags: ["soothing", "barrier", "derm"],
+    salesTip: "Post-procedure, dry patches, kids, lips — this is the multi-use hero. Derms recommend it constantly.",
   },
   {
     id: "sk-004",
@@ -299,6 +273,7 @@ export const products: Product[] = [
     skinTypes: ["All", "Mature"],
     size: "1.69 oz",
     tags: ["prestige", "peptides", "anti-aging"],
+    salesTip: "Peptide moisturizer without fragrance — great upsell from CeraVe when they want prestige texture.",
   },
   {
     id: "sk-005",
@@ -316,6 +291,7 @@ export const products: Product[] = [
     skinTypes: ["Oily", "Combination", "Acne-Prone"],
     size: "4 oz",
     tags: ["exfoliant", "acne", "bestseller"],
+    salesTip: "Leave-on, not a wipe-off. Start 2–3x a week. Blackheads and texture — this is the cult product.",
   },
   {
     id: "sk-006",
@@ -333,6 +309,7 @@ export const products: Product[] = [
     skinTypes: ["All", "Beginner Retinol Users"],
     size: "1 oz",
     tags: ["affordable", "retinol", "anti-aging"],
+    salesTip: "Retinol beginner under $15. Night only, moisturizer after, SPF in the morning — coach them through it.",
   },
   {
     id: "sk-007",
@@ -350,6 +327,7 @@ export const products: Product[] = [
     skinTypes: ["Dry", "Normal", "Combination"],
     size: "1.7 oz",
     tags: ["prestige", "glow", "Japanese"],
+    salesTip: "Dewy, glass-skin finish. Dry skin guests who hate matte moisturizers love this.",
   },
   {
     id: "sk-008",
@@ -367,6 +345,7 @@ export const products: Product[] = [
     skinTypes: ["Dry", "Very Dry", "Sensitive"],
     size: "16 oz",
     tags: ["drugstore", "barrier", "bestseller", "derm-recommended"],
+    salesTip: "The tub. Face and body. Face-first recommendation for dry/sensitive and eczema-prone guests.",
   },
   {
     id: "mk-001",
@@ -382,6 +361,7 @@ export const products: Product[] = [
     keyIngredients: ["Lotus Extract", "Gardenia", "Magnolia"],
     size: "0.25 oz",
     tags: ["bestseller", "liquid", "buildable"],
+    salesTip: "A little goes a long way — one dot on each cheek. e.l.f. Camo is the budget twin if price is an issue.",
   },
   {
     id: "mk-002",
@@ -397,6 +377,7 @@ export const products: Product[] = [
     keyIngredients: ["Squalane", "Niacinamide", "Hyaluronic Acid"],
     size: "1.01 oz",
     tags: ["affordable", "glow", "dupe"],
+    salesTip: "Charlotte Tilbury / premium filter vibe under $15. Wear alone or mix into foundation.",
   },
   {
     id: "mk-003",
@@ -412,6 +393,7 @@ export const products: Product[] = [
     keyIngredients: ["Light-reflecting Particles", "Vitamin E"],
     size: "0.22 oz",
     tags: ["prestige", "coverage", "bestseller"],
+    salesTip: "The under-eye gold standard. Not too dry, not too creasy — shade match carefully.",
   },
   {
     id: "mk-004",
@@ -427,6 +409,7 @@ export const products: Product[] = [
     keyIngredients: ["Bamboo Extract", "Flexible Fibers"],
     size: "0.2 oz",
     tags: ["drugstore", "lengthening", "bestseller"],
+    salesTip: "Length without the prestige price. Recommend the waterproof version if they cry or sweat.",
   },
   {
     id: "hr-001",
@@ -443,6 +426,7 @@ export const products: Product[] = [
     concerns: ["Damage", "Breakage", "Color-Treated"],
     size: "3.3 oz",
     tags: ["bestseller", "repair", "bond-builder"],
+    salesTip: "10 minutes on towel-dried hair before shampoo. Color-treated and bleached guests — this is non-negotiable.",
   },
   {
     id: "hr-002",
@@ -459,6 +443,7 @@ export const products: Product[] = [
     concerns: ["Damage", "Breakage", "Chemical Processing"],
     size: "0.17 oz / 5 ml",
     tags: ["prestige", "peptide", "repair"],
+    salesTip: "4 minutes, leave-in, no rinse. After bleach or keratin — the prestige bond repair story.",
   },
   {
     id: "hr-003",
@@ -475,5 +460,6 @@ export const products: Product[] = [
     concerns: ["Oiliness", "Volume", "Refresh"],
     size: "5.5 oz",
     tags: ["clean", "volume", "dry shampoo"],
+    salesTip: "Doesn't leave the white cast as badly as drugstore. Clean formula story for conscious guests.",
   },
 ];

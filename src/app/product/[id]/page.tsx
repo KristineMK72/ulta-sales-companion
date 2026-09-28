@@ -46,10 +46,11 @@ export default async function ProductPage({
             <p className="text-sm text-gray-500 mt-1">
               {product.category} · {product.subcategory}
               {product.size ? ` · ${product.size}` : ""}
+              {product.sku ? ` · SKU ${product.sku}` : ""}
             </p>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3">
             <span className="text-3xl font-bold text-[#f11a22]">
               ${price.toFixed(2)}
             </span>
@@ -58,7 +59,27 @@ export default async function ProductPage({
             </span>
           </div>
 
+          <div className="flex flex-wrap gap-1.5">
+            {product.tags.map((t) => (
+              <span
+                key={t}
+                className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded capitalize"
+              >
+                {t}
+              </span>
+            ))}
+          </div>
+
           <p className="text-gray-700 leading-relaxed">{product.description}</p>
+
+          {product.salesTip && (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+              <p className="text-xs font-bold uppercase tracking-wide text-amber-800 mb-1">
+                Floor tip for associates
+              </p>
+              <p className="text-sm text-amber-950 leading-relaxed">{product.salesTip}</p>
+            </div>
+          )}
 
           {product.notes && (
             <div className="space-y-2">
@@ -118,16 +139,16 @@ export default async function ProductPage({
             </div>
           )}
 
-          <div className="flex flex-wrap gap-1.5 pt-2">
-            {product.tags.map((t) => (
-              <span
-                key={t}
-                className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded"
-              >
-                {t}
-              </span>
-            ))}
-          </div>
+          {product.ultaUrl && (
+            <a
+              href={product.ultaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-[#f11a22] text-white font-semibold px-5 py-3 rounded-xl hover:bg-red-700 transition-colors"
+            >
+              Open on Ulta.com →
+            </a>
+          )}
         </div>
       </div>
 
@@ -136,10 +157,10 @@ export default async function ProductPage({
           Comparable products for your guest
         </h2>
         <p className="text-sm text-gray-600 mb-5">
-          Ranked by shared notes, ingredients, category, and price proximity.
+          Ranked by shared notes, ingredients, finish/coverage, category, and price. Use these when they want an alternative or a dupe.
         </p>
         {similar.length === 0 ? (
-          <p className="text-gray-500">No strong comparables found in the demo catalog.</p>
+          <p className="text-gray-500">No strong comparables in the current catalog.</p>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {similar.map(({ product: p, score, reasons }) => (
