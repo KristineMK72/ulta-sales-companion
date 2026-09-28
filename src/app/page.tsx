@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { SearchBar } from "@/components/SearchBar";
 import { ProductCard } from "@/components/ProductCard";
-import { products } from "@/data/products";
+import { products } from "@/lib/similarity";
 import { searchProducts } from "@/lib/similarity";
 
 export default async function Home({
@@ -12,7 +12,6 @@ export default async function Home({
   const { q } = await searchParams;
   const results = q ? searchProducts(q) : products;
 
-  // Group by category for browsing
   const byCategory = results.reduce(
     (acc, p) => {
       if (!acc[p.category]) acc[p.category] = [];

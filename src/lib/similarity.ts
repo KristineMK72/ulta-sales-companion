@@ -1,4 +1,7 @@
-import { Product, products } from "@/data/products";
+import { Product, products as baseProducts } from "@/data/products";
+import { extraProducts } from "@/data/extraProducts";
+
+export const products: Product[] = [...baseProducts, ...extraProducts];
 
 export interface SimilarityScore {
   product: Product;
@@ -23,15 +26,6 @@ function getAllNotes(p: Product): string[] {
   return [...p.notes.top, ...p.notes.heart, ...p.notes.base];
 }
 
-/**
- * Content-based similarity for Ulta sales associates.
- * Prioritizes:
- * 1. Shared fragrance notes / family
- * 2. Shared key ingredients
- * 3. Same subcategory
- * 4. Similar price band
- * 5. Shared concerns / skin types / tags
- */
 export function findSimilar(
   target: Product,
   limit = 8,
@@ -45,7 +39,6 @@ export function findSimilar(
     let score = 0;
     const reasons: string[] = [];
 
-    // 1. Fragrance notes (high weight)
     if (target.notes && candidate.notes) {
       const noteSim = jaccard(getAllNotes(target), getAllNotes(candidate));
       if (noteSim > 0) {
@@ -67,7 +60,6 @@ export function findSimilar(
       }
     }
 
-    // 2. Key ingredients
     if (target.keyIngredients && candidate.keyIngredients) {
       const ingSim = jaccard(target.keyIngredients, candidate.keyIngredients);
       if (ingSim > 0) {
@@ -85,7 +77,6 @@ export function findSimilar(
       }
     }
 
-    // 3. Same category / subcategory
     if (target.category === candidate.category) {
       score += 8;
       if (target.subcategory === candidate.subcategory) {
@@ -96,7 +87,6 @@ export function findSimilar(
       }
     }
 
-    // 4. Price proximity (within ~30%)
     const priceDiff =
       Math.abs(target.price - candidate.price) /
       Math.max(target.price, candidate.price);
@@ -107,7 +97,6 @@ export function findSimilar(
       score += 5;
     }
 
-    // 5. Shared concerns / skin types / tags
     if (target.concerns && candidate.concerns) {
       const concernSim = jaccard(target.concerns, candidate.concerns);
       if (concernSim > 0) {
@@ -129,7 +118,6 @@ export function findSimilar(
     const tagSim = jaccard(target.tags, candidate.tags);
     if (tagSim > 0) score += tagSim * 5;
 
-    // Brand alternative bonus (different brand, same category)
     if (
       target.brand !== candidate.brand &&
       target.category === candidate.category

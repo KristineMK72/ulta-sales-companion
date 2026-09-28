@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
-import { getProductById, findSimilar } from "@/lib/similarity";
-import { products } from "@/data/products";
+import { getProductById, findSimilar, products } from "@/lib/similarity";
 
 export function generateStaticParams() {
   return products.map((p) => ({ id: p.id }));
