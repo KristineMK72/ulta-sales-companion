@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
+import { ShadeStrip } from "@/components/ShadeStrip";
 import { getProductById, findSimilar, products } from "@/lib/similarity";
+import { productShades } from "@/data/shades";
 
 export function generateStaticParams() {
   return products.map((p) => ({ id: p.id }));
@@ -18,13 +20,19 @@ export default async function ProductPage({
 
   const similar = findSimilar(product, 8);
   const price = product.salePrice ?? product.price;
+  const hasShades = Boolean(productShades[id]?.length);
 
   return (
     <div className="space-y-10">
-      <nav className="text-sm text-gray-500">
+      <nav className="text-sm text-gray-500 flex flex-wrap gap-3">
         <Link href="/" className="hover:text-[#f11a22]">
           ← All products
         </Link>
+        {hasShades && (
+          <Link href="/color-match" className="hover:text-[#f11a22]">
+            Shade match
+          </Link>
+        )}
       </nav>
 
       <div className="grid md:grid-cols-2 gap-8 bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
@@ -80,6 +88,8 @@ export default async function ProductPage({
               <p className="text-sm text-amber-950 leading-relaxed">{product.salesTip}</p>
             </div>
           )}
+
+          <ShadeStrip productId={product.id} />
 
           {product.notes && (
             <div className="space-y-2">
@@ -139,6 +149,15 @@ export default async function ProductPage({
             </div>
           )}
 
+          {hasShades && (
+            <Link
+              href="/color-match"
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto border-2 border-[#f11a22] text-[#f11a22] font-semibold px-5 py-3 rounded-xl hover:bg-red-50 transition-colors"
+            >
+              Match this shade across brands →
+            </Link>
+          )}
+
           {product.ultaUrl && (
             <a
               href={product.ultaUrl}
@@ -157,7 +176,8 @@ export default async function ProductPage({
           Comparable products for your guest
         </h2>
         <p className="text-sm text-gray-600 mb-5">
-          Ranked by shared notes, ingredients, finish/coverage, category, and price. Use these when they want an alternative or a dupe.
+          Ranked by shared notes, ingredients, finish/coverage, category, and price.
+          Use these when they want an alternative or a dupe.
         </p>
         {similar.length === 0 ? (
           <p className="text-gray-500">No strong comparables in the current catalog.</p>

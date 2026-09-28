@@ -5,19 +5,33 @@ import Link from "next/link";
 import {
   DEPTHS,
   UNDERTONES,
+  productShades,
   type Depth,
   type Undertone,
 } from "@/data/shades";
-import { matchShades } from "@/lib/colorMatch";
+import { matchShades, matchFromProductShade, getShadeProducts } from "@/lib/colorMatch";
+
+type Mode = "depth" | "known";
 
 export default function ColorMatchPage() {
+  const [mode, setMode] = useState<Mode>("depth");
   const [depth, setDepth] = useState<Depth>("Light-Medium");
   const [undertone, setUndertone] = useState<Undertone>("Neutral");
+  const [knownProductId, setKnownProductId] = useState("mk-006");
+  const [knownShadeName, setKnownShadeName] = useState("2W0 Warm Vanilla");
 
-  const matches = useMemo(
-    () => matchShades(depth, undertone, 16),
-    [depth, undertone]
-  );
+  const shadeProducts = useMemo(() => getShadeProducts(), []);
+  const knownShades = productShades[knownProductId] || [];
+
+  const matches = useMemo(() => {
+    if (mode === "known") {
+      return matchFromProductShade(knownProductId, knownShadeName, 16);
+    }
+    return matchShades(depth, undertone, 16);
+  }, [mode, depth, undertone, knownProductId, knownShadeName]);
+
+  const knownProduct = shadeProducts.find((p) => p.id === knownProductId);
+  const activeShade = knownShades.find((s) => s.name === knownShadeName);
 
   return (
     <div className="space-y-8">
@@ -32,69 +46,169 @@ export default function ColorMatchPage() {
           Shade & color match
         </h1>
         <p className="text-gray-600 max-w-2xl">
-          Pick your guest&apos;s depth and undertone. We&apos;ll surface foundations
-          across brands with the closest shade — prestige and value side by side.
+          Match by depth & undertone — or start from a shade they already wear
+          (e.g. Double Wear 2W0 → Fenty / Maybelline).
         </p>
       </header>
 
-      <div className="bg-white border border-gray-200 rounded-2xl p-5 sm:p-6 shadow-sm space-y-6">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
-            1. Depth (light → deep)
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {DEPTHS.map((d) => (
-              <button
-                key={d}
-                type="button"
-                onClick={() => setDepth(d)}
-                className={`px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
-                  depth === d
-                    ? "bg-[#f11a22] text-white shadow"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {d}
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* Mode toggle */}
+      <div className="flex gap-2 p-1 bg-gray-100 rounded-xl w-fit">
+        <button
+          type="button"
+          onClick={() => setMode("depth")}
+          className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+            mode === "depth"
+              ? "bg-white text-gray-900 shadow"
+              : "text-gray-600 hover:text-gray-900"
+          }`}
+        >
+          Depth + undertone
+        </button>
+        <button
+          type="button"
+          onClick={() => setMode("known")}
+          className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+            mode === "known"
+              ? "bg-white text-gray-900 shadow"
+              : "text-gray-600 hover:text-gray-900"
+          }`}
+        >
+          From a shade they wear
+        </button>
+      </div>
 
-        <div>
-          <p className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
-            2. Undertone
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {UNDERTONES.map((u) => (
-              <button
-                key={u}
-                type="button"
-                onClick={() => setUndertone(u)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
-                  undertone === u
-                    ? "bg-[#f11a22] text-white shadow"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
+      <div className="bg-white border border-gray-200 rounded-2xl p-5 sm:p-6 shadow-sm space-y-6">
+        {mode === "depth" ? (
+          <>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
+                1. Depth (light → deep)
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {DEPTHS.map((d) => (
+                  <button
+                    key={d}
+                    type="button"
+                    onClick={() => setDepth(d)}
+                    className={`px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+                      depth === d
+                        ? "bg-[#f11a22] text-white shadow"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {d}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
+                2. Undertone
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {UNDERTONES.map((u) => (
+                  <button
+                    key={u}
+                    type="button"
+                    onClick={() => setUndertone(u)}
+                    className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${
+                      undertone === u
+                        ? "bg-[#f11a22] text-white shadow"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {u}
+                  </button>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                Cool = pink/red · Warm = yellow/golden · Neutral = balanced · Olive =
+                green/golden
+              </p>
+            </div>
+          </>
+        ) : (
+          <>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
+                1. Foundation they already wear
+              </p>
+              <select
+                value={knownProductId}
+                onChange={(e) => {
+                  const id = e.target.value;
+                  setKnownProductId(id);
+                  const first = productShades[id]?.[0];
+                  if (first) setKnownShadeName(first.name);
+                }}
+                className="w-full sm:w-auto min-w-[280px] border border-gray-300 rounded-xl px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#f11a22]/40"
               >
-                {u}
-              </button>
-            ))}
-          </div>
-          <p className="text-xs text-gray-500 mt-2">
-            Cool = pink/red · Warm = yellow/golden · Neutral = balanced · Olive = green/golden
-          </p>
-        </div>
+                {shadeProducts.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.brand} — {p.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
+                2. Their shade
+              </p>
+              <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
+                {knownShades.map((s) => (
+                  <button
+                    key={s.name}
+                    type="button"
+                    onClick={() => setKnownShadeName(s.name)}
+                    className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
+                      knownShadeName === s.name
+                        ? "bg-[#f11a22] text-white shadow"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    <span
+                      className="w-4 h-4 rounded-full border border-black/10 shrink-0"
+                      style={{ backgroundColor: s.hex || "#D4A574" }}
+                    />
+                    {s.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {activeShade && knownProduct && (
+              <div className="flex items-center gap-3 rounded-xl bg-gray-50 border border-gray-200 px-4 py-3">
+                <div
+                  className="w-12 h-12 rounded-full border-2 border-white shadow ring-1 ring-gray-200"
+                  style={{ backgroundColor: activeShade.hex || "#D4A574" }}
+                />
+                <div>
+                  <p className="text-sm font-semibold text-gray-900">
+                    Matching from {knownProduct.brand} · {activeShade.name}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {activeShade.depth} · {activeShade.undertone}
+                  </p>
+                </div>
+              </div>
+            )}
+          </>
+        )}
 
         <div className="rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-950">
           <strong>Associate tip:</strong> Check veins (blue = cool, green = warm),
-          jewelry preference (silver vs gold), and how they tan. When in doubt,
-          neutral is the safest start — then refine on the face, not the hand.
+          jewelry preference (silver vs gold), and how they tan. Always confirm on the
+          jawline in natural light — not the hand.
         </div>
       </div>
 
       <section>
         <h2 className="text-lg font-semibold text-gray-900 mb-1">
-          Matches for {depth} · {undertone}
+          {mode === "known" && activeShade
+            ? `Cross-brand matches for ${activeShade.name}`
+            : `Matches for ${depth} · ${undertone}`}
         </h2>
         <p className="text-sm text-gray-600 mb-4">
           {matches.length} foundation shade{matches.length !== 1 ? "s" : ""} across
@@ -137,7 +251,9 @@ export default function ColorMatchPage() {
                       Shade: {shade.name}
                     </p>
                     <p className="text-xs text-gray-500">
-                      {shade.depth} · {shade.undertone} · ${product.price.toFixed(2)}
+                      {shade.depth} · {shade.undertone} · ${
+                        product.price.toFixed(2)
+                      }
                     </p>
                     <ul className="mt-2 space-y-0.5">
                       {reasons.slice(0, 2).map((r, i) => (
