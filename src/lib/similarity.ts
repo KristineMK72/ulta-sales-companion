@@ -1,7 +1,12 @@
 import { Product, products as baseProducts } from "@/data/products";
 import { extraProducts } from "@/data/extraProducts";
+import { moreProducts } from "@/data/moreProducts";
 
-export const products: Product[] = [...baseProducts, ...extraProducts];
+export const products: Product[] = [
+  ...baseProducts,
+  ...extraProducts,
+  ...moreProducts,
+];
 
 export interface SimilarityScore {
   product: Product;
@@ -54,7 +59,11 @@ export function findSimilar(
           );
         }
       }
-      if (target.family && candidate.family && target.family === candidate.family) {
+      if (
+        target.family &&
+        candidate.family &&
+        target.family === candidate.family
+      ) {
         score += 15;
         reasons.push(`Same family: ${target.family}`);
       }
@@ -126,13 +135,15 @@ export function findSimilar(
     }
 
     if (score > 5) {
-      results.push({ product: candidate, score: Math.round(score * 10) / 10, reasons });
+      results.push({
+        product: candidate,
+        score: Math.round(score * 10) / 10,
+        reasons,
+      });
     }
   }
 
-  return results
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit);
+  return results.sort((a, b) => b.score - a.score).slice(0, limit);
 }
 
 export function searchProducts(query: string): Product[] {
@@ -155,7 +166,10 @@ export function searchProducts(query: string): Product[] {
       .join(" ")
       .toLowerCase();
 
-    return haystack.includes(q) || q.split(/\s+/).every((term) => haystack.includes(term));
+    return (
+      haystack.includes(q) ||
+      q.split(/\s+/).every((term) => haystack.includes(term))
+    );
   });
 }
 
