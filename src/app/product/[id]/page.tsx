@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
+import { ProductImage } from "@/components/ProductImage";
 import { ShadeStrip } from "@/components/ShadeStrip";
 import { getProductById, findSimilar, products } from "@/lib/similarity";
 import { productShades } from "@/data/shades";
@@ -36,12 +37,8 @@ export default async function ProductPage({
       </nav>
 
       <div className="grid md:grid-cols-2 gap-8 bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-        <div className="aspect-square rounded-xl overflow-hidden bg-gray-100">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover"
-          />
+        <div className="aspect-square rounded-xl overflow-hidden">
+          <ProductImage product={product} />
         </div>
         <div className="space-y-4">
           <div>
@@ -85,7 +82,9 @@ export default async function ProductPage({
               <p className="text-xs font-bold uppercase tracking-wide text-amber-800 mb-1">
                 Floor tip for associates
               </p>
-              <p className="text-sm text-amber-950 leading-relaxed">{product.salesTip}</p>
+              <p className="text-sm text-amber-950 leading-relaxed">
+                {product.salesTip}
+              </p>
             </div>
           )}
 
@@ -118,7 +117,9 @@ export default async function ProductPage({
 
           {product.keyIngredients && (
             <div>
-              <h3 className="font-semibold text-gray-900 mb-1">Key Ingredients / Actives</h3>
+              <h3 className="font-semibold text-gray-900 mb-1">
+                Key Ingredients / Actives
+              </h3>
               <div className="flex flex-wrap gap-1.5">
                 {product.keyIngredients.map((ing) => (
                   <span
